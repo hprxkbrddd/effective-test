@@ -10,5 +10,5 @@ spring:
 
 app:
   encryptor:
-    password: 'THE-password'
-    salt: 'THE-salt'
+    password: "1234567890abcdef1234567890abcdef"
+    salt: "1234567890abcdef"
