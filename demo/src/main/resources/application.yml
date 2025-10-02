@@ -1,0 +1,8 @@
+spring:
+  application.name: demo
+  jpa.hibernate.ddl-auto: update
+
+app:
+  encryptor:
+    password: 'THE-password'
+    salt: 'THE-salt'
