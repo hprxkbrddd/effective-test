@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin/card")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminCardController {
 
     @GetMapping

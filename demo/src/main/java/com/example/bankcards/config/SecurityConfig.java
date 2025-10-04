@@ -42,7 +42,6 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/user/token"
                         ).permitAll()
-                        .requestMatchers("*/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
