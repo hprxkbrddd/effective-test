@@ -1,6 +1,5 @@
 package com.example.bankcards.config;
 
-import com.example.bankcards.entity.Role;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.service.EffectiveUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +15,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -46,7 +42,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/user/token"
                         ).permitAll()
-                        .requestMatchers("/api/v1/admin/user").hasRole("ADMIN")
+                        .requestMatchers("*/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
