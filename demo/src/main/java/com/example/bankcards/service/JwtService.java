@@ -13,10 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -27,9 +24,7 @@ public class JwtService {
     @Value("${app.secret-key}")
     private String secretKey;
 
-
     public String generateToken(String username){
-        Map<String, Object> claims = new HashMap<>();
         CardUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Could not generate token. User is not in database"));
         return Jwts.builder()

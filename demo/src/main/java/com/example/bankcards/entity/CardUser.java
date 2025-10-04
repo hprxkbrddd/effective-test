@@ -1,6 +1,7 @@
 package com.example.bankcards.entity;
 
 import com.example.bankcards.dto.UserDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,6 +19,7 @@ import java.util.Set;
 public class CardUser {
     @Id
     private String id;
+    @Column(unique = true)
     private String username;
     private String password;
     private Set<Role> roles;

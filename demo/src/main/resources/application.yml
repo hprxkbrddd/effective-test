@@ -9,6 +9,9 @@ spring:
 
 
 app:
+  admin:
+    username: "admin"
+    password: "admin"
   encryptor:
     password: "1234567890abcdef1234567890abcdef"
     salt: "1234567890abcdef"

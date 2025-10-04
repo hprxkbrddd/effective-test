@@ -18,7 +18,7 @@ public class EffectiveUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return cardUser.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getDescription()))
+                .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toSet());
     }
 

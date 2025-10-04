@@ -9,43 +9,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/card/admin")
-public class CardAdminController {
+@RequestMapping("/api/v1/admin/card")
+public class AdminCardController {
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/get-all")
+    @GetMapping
     public ResponseEntity<List<CardDTO>> getAllCards(){
         return null;
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
 
     @GetMapping("/get-by-id")
     public ResponseEntity<CardDTO> getCardById(@RequestParam String cardId){
         return null;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<String> createCard(@RequestBody CardCreationDTO dto){
         return null;
     }
-    @PreAuthorize("hasRole('ADMIN')")
 
     @PutMapping("/activate")
     public ResponseEntity<String> activateCard(@RequestParam String cardId){
         return null;
     }
-    @PreAuthorize("hasRole('ADMIN')")
 
     @PutMapping("/block")
     public ResponseEntity<String> blockCard(@RequestParam String cardId){
         return null;
     }
-    @PreAuthorize("hasRole('ADMIN')")
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<String> deleteCard(@RequestParam String cardId) {
         return null;
     }
