@@ -59,6 +59,16 @@ public class CardService {
         return card.toDTO();
     }
 
+    public CardDTO createExpired(String ownerId){
+        Card card = new Card(
+                cardNumberGenerator.generateCardNumber(CardType.RANDOM),
+                ownerId,
+                CardStatus.EXPIRED
+        );
+        cardRepository.save(card);
+        return card.toDTO();
+    }
+
     public CardDTO setCardStatus(Long cardId, CardStatus status){
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new EntityNotFoundException("Could not update card status. Card is not in database"));

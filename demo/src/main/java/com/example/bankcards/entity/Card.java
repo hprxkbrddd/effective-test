@@ -66,6 +66,17 @@ public class Card {
         );
     }
 
+    public Card(
+            String cardNumber,
+            String ownerId, CardStatus status
+    ) {
+        this.cardNumber = cardNumber;
+        this.ownerId = ownerId;
+        this.expiryDate = YearMonth.now().minusYears(5);
+        this.status= status;
+        this.balance = BigDecimal.ZERO;
+    }
+
     public CardDTO toDTOEncrypted() {
         return new CardDTO(
                 id,

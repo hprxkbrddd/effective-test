@@ -45,6 +45,11 @@ public class AdminCardController {
         return ResponseEntity.ok(cardService.create(ownerId));
     }
 
+    @PostMapping("/expired")
+    public ResponseEntity<CardDTO> createExpiredCardForUser(@RequestParam String ownerId){
+        return ResponseEntity.ok(cardService.createExpired(ownerId));
+    }
+
     @PutMapping("/activate")
     public ResponseEntity<CardDTO> activateCard(@RequestParam Long cardId){
         return ResponseEntity.ok(
