@@ -17,20 +17,26 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/get-cards")
+    @GetMapping("/card")
     public ResponseEntity<List<Card>> getUsersCards(
             @RequestHeader("Authorization") String authHeader){
         return null;
     }
 
-    @PostMapping("/block-request")
+    @PostMapping("/card")
+    public ResponseEntity<List<Card>> createCard(
+            @RequestHeader("Authorization") String authHeader){
+        return null;
+    }
+
+    @PutMapping("/card/block")
     public ResponseEntity<String> blockCardRequest(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam String cardId){
         return null;
     }
 
-    @GetMapping("/get-card-balance")
+    @GetMapping("/card/balance")
     public ResponseEntity<BigDecimal> getCardBalance(
             @RequestHeader("Authorization") String authHeader,
             @RequestParam String cardId){

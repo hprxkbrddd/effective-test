@@ -31,6 +31,12 @@ public class UserService {
                 .stream().map(CardUser::toDTO).toList();
     }
 
+    public UserDTO getByID(String id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Could not fetch user from db: User does not exist"))
+                .toDTO();
+    }
+
     public String getToken(String username, String password) {
         Authentication auth =
                 authManager.authenticate(
