@@ -46,6 +46,12 @@ public class JwtService {
         }
     }
 
+    public String extractId(String token){
+        return userRepository.findByUsername(extractSub(token))
+                .orElseThrow(() -> new EntityNotFoundException("Could not retrieve token owner's ID. Owner of the token is not in database"))
+                .getId();
+    }
+
     public Boolean validateToken(String token, UserDetails userDetails){
         try {
             final String username = extractSub(token);
