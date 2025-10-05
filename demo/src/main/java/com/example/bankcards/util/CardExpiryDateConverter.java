@@ -34,6 +34,6 @@ public class CardExpiryDateConverter implements AttributeConverter<YearMonth, Lo
      */
     @Override
     public YearMonth convertToEntityAttribute(LocalDate dbData) {
-        return  YearMonth.of(dbData.getYear(), dbData.getMonth());
+        return YearMonth.of(dbData.getYear(), dbData.getMonth());
     }
 }

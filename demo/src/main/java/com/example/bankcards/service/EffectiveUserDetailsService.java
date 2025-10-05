@@ -31,8 +31,8 @@ public class EffectiveUserDetailsService implements UserDetailsService {
 
     @PostConstruct
     @Transactional
-    public void saveAdmin(){
-        if (userRepository.findByUsername(adminUsername).isEmpty()){
+    public void saveAdmin() {
+        if (userRepository.findByUsername(adminUsername).isEmpty()) {
             CardUser admin = new CardUser();
             admin.setRoles(Set.of(Role.ADMIN));
             admin.setId(IdGenerator.generateId());
@@ -45,7 +45,7 @@ public class EffectiveUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         CardUser cardUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("There is no user with username '"+username+"'"));
+                .orElseThrow(() -> new UsernameNotFoundException("There is no user with username '" + username + "'"));
         return new EffectiveUserDetails(cardUser);
     }
 }

@@ -30,7 +30,7 @@ public class UserService {
                 .stream().map(CardUser::toDTO).toList();
     }
 
-    public UserDTO getByID(String id){
+    public UserDTO getByID(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Could not fetch user from db: User does not exist"))
                 .toDTO();
@@ -44,9 +44,9 @@ public class UserService {
                                 password
                         )
                 );
-        if (auth.isAuthenticated()){
+        if (auth.isAuthenticated()) {
             return jwtService.generateToken(username);
-        }else{
+        } else {
             throw new UnauthorizedException("User is not authenticated");
         }
     }

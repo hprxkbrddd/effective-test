@@ -24,7 +24,7 @@ public class CardUser {
     private String password;
     private Set<Role> roles;
 
-    public UserDTO toDTO(){
+    public UserDTO toDTO() {
         return new UserDTO(id, username, roles);
     }
 }

@@ -25,7 +25,7 @@ public class Card {
         this.cardNumber = cardNumber;
         this.ownerId = ownerId;
         this.expiryDate = YearMonth.now().plusYears(5);
-        this.status= CardStatus.ACTIVE;
+        this.status = CardStatus.ACTIVE;
         this.balance = BigDecimal.ZERO;
     }
 

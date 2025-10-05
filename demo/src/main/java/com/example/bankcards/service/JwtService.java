@@ -24,20 +24,20 @@ public class JwtService {
     @Value("${app.secret-key}")
     private String secretKey;
 
-    public String generateToken(String username){
+    public String generateToken(String username) {
         CardUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Could not generate token. User is not in database"));
         return Jwts.builder()
                 .subject(username)
                 .claims().add("roles", user.getRoles())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+1000*120))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 120))
                 .and()
-                .signWith(getKey(),Jwts.SIG.HS384)
+                .signWith(getKey(), Jwts.SIG.HS384)
                 .compact();
     }
 
-    public String extractSub(String token){
+    public String extractSub(String token) {
         try {
             return extractAllClaims(token).getSubject();
         } catch (Exception e) {
@@ -46,13 +46,13 @@ public class JwtService {
         }
     }
 
-    public String extractId(String token){
+    public String extractId(String token) {
         return userRepository.findByUsername(extractSub(token))
                 .orElseThrow(() -> new EntityNotFoundException("Could not retrieve token owner's ID. Owner of the token is not in database"))
                 .getId();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails){
+    public Boolean validateToken(String token, UserDetails userDetails) {
         try {
             final String username = extractSub(token);
             Claims claims = extractAllClaims(token);
@@ -87,7 +87,7 @@ public class JwtService {
         return claims.getExpiration().before(new Date());
     }
 
-    private SecretKey getKey(){
+    private SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }

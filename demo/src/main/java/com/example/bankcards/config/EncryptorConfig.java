@@ -15,7 +15,7 @@ public class EncryptorConfig {
     private String password;
 
     @Bean(name = "textEncryptor")
-    public TextEncryptor getEncryptor(){
+    public TextEncryptor getEncryptor() {
         return Encryptors.text(password, salt);
     }
 }

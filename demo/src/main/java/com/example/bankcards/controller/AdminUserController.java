@@ -17,26 +17,26 @@ import java.util.List;
 public class AdminUserController {
 
     private final UserService userService;
-    
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAll(){
+    public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getById(@PathVariable String id){
+    public ResponseEntity<UserDTO> getById(@PathVariable String id) {
         return ResponseEntity.ok(userService.getByID(id));
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> addUser(@RequestBody UserCreationDTO dto){
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserCreationDTO dto) {
         return ResponseEntity.ok(
                 userService.createUser(dto.username(), dto.password())
         );
     }
 
     @DeleteMapping
-    public ResponseEntity<UserDTO> deleteUser(@RequestParam String id){
+    public ResponseEntity<UserDTO> deleteUser(@RequestParam String id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 }

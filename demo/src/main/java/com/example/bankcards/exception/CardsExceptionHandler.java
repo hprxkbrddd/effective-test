@@ -10,27 +10,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CardsExceptionHandler {
 
-    @ExceptionHandler({IllegalStateException.class, CardPropertyNotAccessible.class})
+    @ExceptionHandler({
+            IllegalStateException.class,
+            CardPropertyNotAccessibleException.class,
+            InvalidCardException.class
+    })
     public ResponseEntity<String> handleBadRequestExceptions(
-            RuntimeException ex){
+            RuntimeException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
+    @ExceptionHandler({UsernameNotFoundException.class, EntityNotFoundException.class})
     public ResponseEntity<String> handleUsernameNotFoundException(
-            UsernameNotFoundException ex
-    ){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(
-            EntityNotFoundException ex
-    ){
+            RuntimeException ex
+    ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
@@ -39,7 +34,7 @@ public class CardsExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<String> handleUnauthorizedException(
             UnauthorizedException ex
-    ){
+    ) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ex.getMessage());

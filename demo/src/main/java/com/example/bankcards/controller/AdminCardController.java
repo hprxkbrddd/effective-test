@@ -20,27 +20,27 @@ public class AdminCardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<List<Card>> getAllCards(){
+    public ResponseEntity<List<Card>> getAllCards() {
         return ResponseEntity.ok(cardService.getAll());
     }
 
     @GetMapping("/{cardId}")
-    public ResponseEntity<CardDTO> getCardById(@PathVariable Long cardId){
+    public ResponseEntity<CardDTO> getCardById(@PathVariable Long cardId) {
         return ResponseEntity.ok(cardService.getById(cardId));
     }
 
     @GetMapping("/number/{cardId}")
-    public ResponseEntity<CardDTO> getCardByNumber(@PathVariable String cardNumber){
+    public ResponseEntity<CardDTO> getCardByNumber(@PathVariable String cardNumber) {
         return ResponseEntity.ok(cardService.getByNumber(cardNumber));
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<CardDTO>> getCardsOfUser(@RequestParam String ownerId){
+    public ResponseEntity<List<CardDTO>> getCardsOfUser(@RequestParam String ownerId) {
         return ResponseEntity.ok(cardService.getCardsOfUser(ownerId));
     }
 
     @PostMapping
-    public ResponseEntity<CardDTO> createCardForUser(@RequestParam String ownerId){
+    public ResponseEntity<CardDTO> createCardForUser(@RequestParam String ownerId) {
         return ResponseEntity.ok(cardService.create(ownerId));
     }
 
@@ -50,21 +50,21 @@ public class AdminCardController {
 //    }
 
     @PutMapping("/activate")
-    public ResponseEntity<CardDTO> activateCard(@RequestParam Long cardId){
+    public ResponseEntity<CardDTO> activateCard(@RequestParam Long cardId) {
         return ResponseEntity.ok(
                 cardService.setCardStatus(cardId, CardStatus.ACTIVE)
         );
     }
 
     @PutMapping("/block")
-    public ResponseEntity<CardDTO> blockCard(@RequestParam Long cardId){
+    public ResponseEntity<CardDTO> blockCard(@RequestParam Long cardId) {
         return ResponseEntity.ok(
                 cardService.setCardStatus(cardId, CardStatus.BLOCKED)
         );
     }
 
     @PutMapping("/expire")
-    public ResponseEntity<String> expireCards(){
+    public ResponseEntity<String> expireCards() {
         cardService.expire();
         return ResponseEntity.ok("All outdated cards are marked as expired");
     }
