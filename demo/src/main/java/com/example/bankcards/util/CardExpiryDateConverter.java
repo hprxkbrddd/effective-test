@@ -4,7 +4,6 @@ import jakarta.persistence.AttributeConverter;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Date;
 
 public class CardExpiryDateConverter implements AttributeConverter<YearMonth, LocalDate> {
     /**

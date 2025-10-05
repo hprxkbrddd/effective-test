@@ -3,6 +3,7 @@ package com.example.bankcards.util;
 import com.example.bankcards.dto.CardNumber;
 import com.example.bankcards.dto.CardType;
 import org.springframework.stereotype.Service;
+
 import java.util.Random;
 
 @Service

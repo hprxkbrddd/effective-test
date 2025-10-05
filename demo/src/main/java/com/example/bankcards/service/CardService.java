@@ -1,22 +1,16 @@
 package com.example.bankcards.service;
 
 import com.example.bankcards.dto.CardDTO;
-import com.example.bankcards.dto.CardEncryptedDTO;
 import com.example.bankcards.dto.CardType;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
-import com.example.bankcards.util.CardNumberEncryptor;
 import com.example.bankcards.util.CardNumberGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -59,15 +53,15 @@ public class CardService {
         return card.toDTO();
     }
 
-    public CardDTO createOutdated(String ownerId){
-        Card card = new Card(
-                cardNumberGenerator.generateCardNumber(CardType.RANDOM),
-                ownerId,
-                CardStatus.EXPIRED
-        );
-        cardRepository.save(card);
-        return card.toDTO();
-    }
+//    public CardDTO createOutdated(String ownerId){
+//        Card card = new Card(
+//                cardNumberGenerator.generateCardNumber(CardType.RANDOM),
+//                ownerId,
+//                CardStatus.EXPIRED
+//        );
+//        cardRepository.save(card);
+//        return card.toDTO();
+//    }
 
     public CardDTO setCardStatus(Long cardId, CardStatus status){
         Card card = cardRepository.findById(cardId)

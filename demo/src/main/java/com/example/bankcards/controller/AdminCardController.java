@@ -5,7 +5,6 @@ import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.service.CardService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +44,10 @@ public class AdminCardController {
         return ResponseEntity.ok(cardService.create(ownerId));
     }
 
-    @PostMapping("/expired")
-    public ResponseEntity<CardDTO> createExpiredCardForUser(@RequestParam String ownerId){
-        return ResponseEntity.ok(cardService.createOutdated(ownerId));
-    }
+//    @PostMapping("/expired")
+//    public ResponseEntity<CardDTO> createExpiredCardForUser(@RequestParam String ownerId){
+//        return ResponseEntity.ok(cardService.createOutdated(ownerId));
+//    }
 
     @PutMapping("/activate")
     public ResponseEntity<CardDTO> activateCard(@RequestParam Long cardId){

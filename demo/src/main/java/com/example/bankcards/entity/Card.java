@@ -29,16 +29,16 @@ public class Card {
         this.balance = BigDecimal.ZERO;
     }
 
-    public Card(
-            String cardNumber,
-            String ownerId, CardStatus status
-    ) {
-        this.cardNumber = cardNumber;
-        this.ownerId = ownerId;
-        this.expiryDate = YearMonth.now().minusYears(5);
-        this.status= CardStatus.ACTIVE;
-        this.balance = BigDecimal.ZERO;
-    }
+//    public Card(
+//            String cardNumber,
+//            String ownerId, CardStatus status
+//    ) {
+//        this.cardNumber = cardNumber;
+//        this.ownerId = ownerId;
+//        this.expiryDate = YearMonth.now().minusYears(5);
+//        this.status= CardStatus.ACTIVE;
+//        this.balance = BigDecimal.ZERO;
+//    }
 
     @Convert(converter = CardNumberEncryptor.class)
     @Column(name = "card_number", nullable = false, unique = true)

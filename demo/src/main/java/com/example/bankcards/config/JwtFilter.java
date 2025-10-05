@@ -2,7 +2,6 @@ package com.example.bankcards.config;
 
 import com.example.bankcards.service.EffectiveUserDetailsService;
 import com.example.bankcards.service.JwtService;
-import com.example.bankcards.util.EffectiveUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

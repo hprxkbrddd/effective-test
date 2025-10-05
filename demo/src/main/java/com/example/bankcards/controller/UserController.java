@@ -1,7 +1,6 @@
 package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.CardDTO;
-import com.example.bankcards.dto.CardEncryptedDTO;
 import com.example.bankcards.dto.UserCreationDTO;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.exception.UnauthorizedException;
