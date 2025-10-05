@@ -1,17 +1,18 @@
 package com.example.bankcards.entity;
 
 import com.example.bankcards.dto.CardDTO;
-import com.example.bankcards.dto.CardEncryptedDTO;
 import com.example.bankcards.util.CardNumberEncryptor;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 
 @Entity
+@NoArgsConstructor
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,18 +32,19 @@ public class Card {
     @Convert(converter = CardNumberEncryptor.class)
     @Column(name = "card_number", nullable = false, unique = true)
     @Getter
-    private final String cardNumber;
+    private String cardNumber;
 
     @Column(name = "card_holder", nullable = false)
     @Getter
-    private final String ownerId;
+    private String ownerId;
 
     @Column(name = "expiry_date", nullable = false)
     @Getter
-    private final YearMonth expiryDate;
+    private YearMonth expiryDate;
 
     @Column(name = "status", nullable = false)
     @Getter
+    @Setter
     private CardStatus status;
 
     @Column(name = "balance", nullable = false)
@@ -50,20 +52,24 @@ public class Card {
     private BigDecimal balance;
 
     public String getCardNumberEncrypted() {
-        return "**** **** **** " + cardNumber.substring(15);
-    }
-
-    public CardEncryptedDTO toDTOEncrypted() {
-        return new CardEncryptedDTO(
-                id,
-                getCardNumberEncrypted()
-        );
+        return "**** **** **** " + cardNumber.substring(12);
     }
 
     public CardDTO toDTO() {
         return new CardDTO(
                 id,
                 cardNumber,
+                ownerId,
+                expiryDate,
+                status,
+                balance
+        );
+    }
+
+    public CardDTO toDTOEncrypted() {
+        return new CardDTO(
+                id,
+                getCardNumberEncrypted(),
                 ownerId,
                 expiryDate,
                 status,

@@ -1,8 +1,10 @@
 package com.example.bankcards.service;
 
 import com.example.bankcards.dto.CardDTO;
+import com.example.bankcards.dto.CardEncryptedDTO;
 import com.example.bankcards.dto.CardType;
 import com.example.bankcards.entity.Card;
+import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.CardNumberEncryptor;
@@ -11,6 +13,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -51,5 +57,19 @@ public class CardService {
         );
         cardRepository.save(card);
         return card.toDTO();
+    }
+
+    public CardDTO setCardStatus(Long cardId, CardStatus status){
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new EntityNotFoundException("Could not update card status. Card is not in database"));
+        card.setStatus(status);
+        return card.toDTOEncrypted();
+    }
+
+    public void expire(){
+        List<Card> expiredCards = cardRepository.findByExpiryDateAfter(YearMonth.now())
+                .orElseGet(Collections::emptyList);
+        if (expiredCards.isEmpty()) return;
+        expiredCards.forEach(card -> card.setStatus(CardStatus.EXPIRED));
     }
 }

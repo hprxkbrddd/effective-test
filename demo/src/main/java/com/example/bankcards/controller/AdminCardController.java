@@ -1,8 +1,11 @@
 package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.CardDTO;
+import com.example.bankcards.entity.Card;
+import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.service.CardService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,29 +21,48 @@ public class AdminCardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<List<CardDTO>> getAllCards(){
+    public ResponseEntity<List<Card>> getAllCards(){
         return ResponseEntity.ok(cardService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{cardId}")
     public ResponseEntity<CardDTO> getCardById(@PathVariable Long cardId){
-        return null;
+        return ResponseEntity.ok(cardService.getById(cardId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/number/{cardId}")
+    public ResponseEntity<CardDTO> getCardByNumber(@PathVariable String cardNumber){
+        return ResponseEntity.ok(cardService.getByNumber(cardNumber));
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<CardDTO>> getCardsOfUser(@RequestParam String ownerId){
+        return ResponseEntity.ok(cardService.getCardsOfUser(ownerId));
+    }
+
     @PostMapping
     public ResponseEntity<CardDTO> createCardForUser(@RequestParam String ownerId){
         return ResponseEntity.ok(cardService.create(ownerId));
     }
 
     @PutMapping("/activate")
-    public ResponseEntity<String> activateCard(@RequestParam String cardId){
-        return null;
+    public ResponseEntity<CardDTO> activateCard(@RequestParam Long cardId){
+        return ResponseEntity.ok(
+                cardService.setCardStatus(cardId, CardStatus.ACTIVE)
+        );
     }
 
     @PutMapping("/block")
-    public ResponseEntity<String> blockCard(@RequestParam String cardId){
-        return null;
+    public ResponseEntity<CardDTO> blockCard(@RequestParam Long cardId){
+        return ResponseEntity.ok(
+                cardService.setCardStatus(cardId, CardStatus.BLOCKED)
+        );
+    }
+
+    @PutMapping("/expire")
+    public ResponseEntity<String> expireCards(){
+        cardService.expire();
+        return ResponseEntity.ok("All outdated cards are marked as expired");
     }
 
     @DeleteMapping
