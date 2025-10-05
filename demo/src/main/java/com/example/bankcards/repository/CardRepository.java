@@ -19,4 +19,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Query(value = "UPDATE card SET status = 2 WHERE expiry_date < CURRENT_DATE",
             nativeQuery = true)
     void expireCards();
+    Optional<Card> findByIdAndOwnerId(Long id, String ownerId);
 }

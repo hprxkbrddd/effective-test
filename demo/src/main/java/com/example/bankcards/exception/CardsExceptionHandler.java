@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CardsExceptionHandler {
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(
-            IllegalStateException ex){
+    @ExceptionHandler({IllegalStateException.class, CardPropertyNotAccessible.class})
+    public ResponseEntity<String> handleBadRequestExceptions(
+            RuntimeException ex){
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ex.getMessage());

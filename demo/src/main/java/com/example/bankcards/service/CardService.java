@@ -4,6 +4,7 @@ import com.example.bankcards.dto.CardDTO;
 import com.example.bankcards.dto.CardType;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.exception.CardPropertyNotAccessible;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.CardNumberGenerator;
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -72,5 +74,11 @@ public class CardService {
 
     public void expire(){
         cardRepository.expireCards();
+    }
+
+    public BigDecimal getBalance(Long cardId, String ownerId){
+        return cardRepository.findByIdAndOwnerId(cardId, ownerId)
+                .orElseThrow(() -> new CardPropertyNotAccessible("Card does not belong to user or does not exist"))
+                .getBalance();
     }
 }

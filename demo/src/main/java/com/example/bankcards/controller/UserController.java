@@ -2,7 +2,7 @@ package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.CardDTO;
 import com.example.bankcards.dto.UserCreationDTO;
-import com.example.bankcards.entity.Card;
+import com.example.bankcards.exception.CardPropertyNotAccessible;
 import com.example.bankcards.exception.UnauthorizedException;
 import com.example.bankcards.service.CardService;
 import com.example.bankcards.service.JwtService;
@@ -23,10 +23,17 @@ public class UserController {
     private final CardService cardService;
     private final JwtService jwtService;
 
+    // TODO pageable
     @GetMapping("/card")
-    public ResponseEntity<List<Card>> getUsersCards(
+    public ResponseEntity<List<CardDTO>> getUsersCards(
             @RequestHeader("Authorization") String authHeader){
-        return null;
+        if (authHeader !=null && authHeader.startsWith("Bearer ")){
+            return ResponseEntity.ok(cardService.getCardsOfUser(
+                    jwtService.extractId(authHeader.substring(7))
+            ));
+        }else {
+            throw new UnauthorizedException("Auth header is either not present or unreadable");
+        }
     }
 
     @PostMapping("/card")
@@ -53,8 +60,15 @@ public class UserController {
     @GetMapping("/card/balance")
     public ResponseEntity<BigDecimal> getCardBalance(
             @RequestHeader("Authorization") String authHeader,
-            @RequestParam String cardId){
-        return null;
+            @RequestParam Long cardId){
+        if (authHeader !=null && authHeader.startsWith("Bearer ")){
+            return ResponseEntity.ok(cardService.getBalance(
+                    cardId,
+                    jwtService.extractId(authHeader.substring(7))
+            ));
+        }else {
+            throw new UnauthorizedException("Auth header is either not present or unreadable");
+        }
     }
 
     @PostMapping("/token")
