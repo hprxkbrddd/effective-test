@@ -16,5 +16,9 @@ import java.util.Optional;
 public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findByOwnerId(String ownerId);
     Optional<Card> findByCardNumber(String cardNumber);
-    Optional<List<Card>> findByExpiryDateAfter(YearMonth expiryDate);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE card SET status = 2 WHERE expiry_date < CURRENT_DATE",
+            nativeQuery = true)
+    int expireCards();
 }

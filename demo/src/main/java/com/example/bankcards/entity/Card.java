@@ -1,11 +1,11 @@
 package com.example.bankcards.entity;
 
 import com.example.bankcards.dto.CardDTO;
+import com.example.bankcards.util.CardExpiryDateConverter;
 import com.example.bankcards.util.CardNumberEncryptor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -29,6 +29,17 @@ public class Card {
         this.balance = BigDecimal.ZERO;
     }
 
+    public Card(
+            String cardNumber,
+            String ownerId, CardStatus status
+    ) {
+        this.cardNumber = cardNumber;
+        this.ownerId = ownerId;
+        this.expiryDate = YearMonth.now().minusYears(5);
+        this.status= CardStatus.ACTIVE;
+        this.balance = BigDecimal.ZERO;
+    }
+
     @Convert(converter = CardNumberEncryptor.class)
     @Column(name = "card_number", nullable = false, unique = true)
     @Getter
@@ -39,6 +50,7 @@ public class Card {
     private String ownerId;
 
     @Column(name = "expiry_date", nullable = false)
+    @Convert(converter = CardExpiryDateConverter.class)
     @Getter
     private YearMonth expiryDate;
 
@@ -64,17 +76,6 @@ public class Card {
                 status,
                 balance
         );
-    }
-
-    public Card(
-            String cardNumber,
-            String ownerId, CardStatus status
-    ) {
-        this.cardNumber = cardNumber;
-        this.ownerId = ownerId;
-        this.expiryDate = YearMonth.now().minusYears(5);
-        this.status= status;
-        this.balance = BigDecimal.ZERO;
     }
 
     public CardDTO toDTOEncrypted() {

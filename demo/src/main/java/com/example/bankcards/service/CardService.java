@@ -59,7 +59,7 @@ public class CardService {
         return card.toDTO();
     }
 
-    public CardDTO createExpired(String ownerId){
+    public CardDTO createOutdated(String ownerId){
         Card card = new Card(
                 cardNumberGenerator.generateCardNumber(CardType.RANDOM),
                 ownerId,
@@ -77,9 +77,6 @@ public class CardService {
     }
 
     public void expire(){
-        List<Card> expiredCards = cardRepository.findByExpiryDateAfter(YearMonth.now())
-                .orElseGet(Collections::emptyList);
-        if (expiredCards.isEmpty()) return;
-        expiredCards.forEach(card -> card.setStatus(CardStatus.EXPIRED));
+        cardRepository.expireCards();
     }
 }
