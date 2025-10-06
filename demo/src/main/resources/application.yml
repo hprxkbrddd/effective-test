@@ -16,3 +16,4 @@ app:
     password: "1234567890abcdef1234567890abcdef"
     salt: "1234567890abcdef"
   secret-key: "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+  token-expiration: 300000

@@ -23,6 +23,8 @@ public class JwtService {
     private final UserRepository userRepository;
     @Value("${app.secret-key}")
     private String secretKey;
+    @Value("${app.token-expiration}")
+    private Integer tokenExpiration;
 
     public String generateToken(String username) {
         CardUser user = userRepository.findByUsername(username)
@@ -31,7 +33,7 @@ public class JwtService {
                 .subject(username)
                 .claims().add("roles", user.getRoles())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 120))
+                .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
                 .and()
                 .signWith(getKey(), Jwts.SIG.HS384)
                 .compact();
