@@ -8,6 +8,8 @@ import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,9 +27,9 @@ public class UserService {
     private final AuthenticationManager authManager;
     private final JwtService jwtService;
 
-    public List<UserDTO> getAll() {
-        return userRepository.findAll()
-                .stream().map(CardUser::toDTO).toList();
+    public Page<UserDTO> getAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(CardUser::toDTO);
     }
 
     public UserDTO getByID(String id) {

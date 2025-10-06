@@ -2,6 +2,8 @@ package com.example.bankcards.repository;
 
 import com.example.bankcards.entity.Card;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +17,10 @@ import java.util.Queue;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-    List<Card> findByOwnerId(String ownerId);
+
+    Page<Card> findAll(Pageable pageable);
+
+    Page<Card> findByOwnerId(String ownerId, Pageable pageable);
 
     Optional<Card> findByCardNumber(String cardNumber);
 

@@ -12,10 +12,14 @@ import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.CardNumberGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +30,9 @@ public class CardService {
 
     private final Queue<Long> cardIdsToBlock = new PriorityQueue<>();
 
-    public List<CardDTO> getAll() {
-        return cardRepository.findAll()
-                .stream().map(Card::toDTOEncrypted)
-                .toList();
+    public Page<CardDTO> getAll(Pageable pageable) {
+        return cardRepository.findAll(pageable)
+                .map(Card::toDTOEncrypted);
     }
 
     public CardDTO getById(Long cardId) {
@@ -44,12 +47,11 @@ public class CardService {
                 .toDTO();
     }
 
-    public List<CardDTO> getCardsOfUser(String userId) {
+    public Page<CardDTO> getCardsOfUser(String userId, Pageable pageable) {
         if (userRepository.findById(userId).isEmpty())
             throw new EntityNotFoundException("Could not fetch cards of user. User is not in database");
-        return cardRepository.findByOwnerId(userId)
-                .stream().map(Card::toDTOEncrypted)
-                .toList();
+        return cardRepository.findByOwnerId(userId, pageable)
+                .map(Card::toDTOEncrypted);
     }
 
     public CardDTO create(String ownerId) {

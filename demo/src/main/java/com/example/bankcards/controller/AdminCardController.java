@@ -1,10 +1,13 @@
 package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.CardDTO;
-import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
 import com.example.bankcards.service.CardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +23,19 @@ public class AdminCardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<List<CardDTO>> getAllCards() {
-        return ResponseEntity.ok(cardService.getAll());
+    public ResponseEntity<Page<CardDTO>> getAllCards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection
+    ) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return ResponseEntity.ok(cardService.getAll(pageable));
     }
 
     @GetMapping("/{cardId}")
@@ -35,8 +49,19 @@ public class AdminCardController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<CardDTO>> getCardsOfUser(@RequestParam String ownerId) {
-        return ResponseEntity.ok(cardService.getCardsOfUser(ownerId));
+    public ResponseEntity<Page<CardDTO>> getCardsOfUser(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam String ownerId) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return ResponseEntity.ok(cardService.getCardsOfUser(ownerId, pageable));
     }
 
     @PostMapping

@@ -2,12 +2,15 @@ package com.example.bankcards.controller;
 
 import com.example.bankcards.dto.CardDTO;
 import com.example.bankcards.dto.UserCreationDTO;
-import com.example.bankcards.exception.CardPropertyNotAccessibleException;
 import com.example.bankcards.exception.UnauthorizedException;
 import com.example.bankcards.service.CardService;
 import com.example.bankcards.service.JwtService;
 import com.example.bankcards.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,13 +26,23 @@ public class UserController {
     private final CardService cardService;
     private final JwtService jwtService;
 
-    // TODO pageable
     @GetMapping("/card")
-    public ResponseEntity<List<CardDTO>> getUsersCards(
+    public ResponseEntity<Page<CardDTO>> getUsersCards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestHeader("Authorization") String authHeader) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return ResponseEntity.ok(cardService.getCardsOfUser(
-                    jwtService.extractId(authHeader.substring(7))
+                    jwtService.extractId(authHeader.substring(7)),
+                    pageable
             ));
         } else {
             throw new UnauthorizedException("Auth header is either not present or unreadable");
