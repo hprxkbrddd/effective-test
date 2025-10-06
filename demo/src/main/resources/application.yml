@@ -1,6 +1,6 @@
 spring:
   application.name: demo
-  jpa.hibernate.ddl-auto: update
+#  jpa.hibernate.ddl-auto: update
   datasource:
 #    url: jdbc:postgresql://localhost:5432/postgres
 #    username: postgres
@@ -10,7 +10,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
+    change-log: classpath:db/migration/db.changelog-master.yaml
 
 springdoc:
   api-docs:

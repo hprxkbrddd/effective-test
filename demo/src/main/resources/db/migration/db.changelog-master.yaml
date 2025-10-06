@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: java_dev
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: VARCHAR(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: card_number
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: card_holder
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiry_date
+                  type: VARCHAR(7)  # Format: YYYY-MM
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: DECIMAL(19, 4)
+                  constraints:
+                    nullable: false
+                  defaultValue: 0
+
+#  - changeSet:
+#      id: 2
+#      author: java_dev
+#      changes:
+#        - insert:
+#            tableName: users
+#            columns:
+#              - column:
+#                  name: id
+#                  value: 'admin'
+#              - column:
+#                  name: username
+#                  value: 'admin'
+#              - column:
+#                  name: password
+#                  value: 'encoded_password'  # Замените на реальный закодированный пароль
+
+  - changeSet:
+      id: 2
+      author: java-dev
+      changes:
+        - sqlFile:
+            path: db/migration/sql/create_transfer_function.sql

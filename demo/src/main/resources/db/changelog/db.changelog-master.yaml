@@ -1,7 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: java-dev
-      changes:
-        - sqlFile:
-            path: db/changelog/sql/create_transfer_function.sql
