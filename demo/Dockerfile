@@ -1,31 +1,18 @@
-# Используем более новую версию Gradle
-FROM gradle:8.7-jdk17-alpine AS builder
+FROM eclipse-temurin:17 AS build
 WORKDIR /app
 
-# Копируем все файлы проекта
-COPY . .
+COPY gradlew .
+COPY gradle ./gradle
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY src ./src
 
-# Даем права на выполнение gradlew (если используется wrapper)
-RUN chmod +x ./gradlew || true
+# Делаем gradlew исполняемым и запускаем сборку
+RUN chmod +x gradlew
+RUN ./gradlew clean build -x test --no-daemon
 
-# Очищаем кеш Gradle и собираем с оптимизацией
-RUN gradle clean --no-daemon && \
-    gradle build -x test --no-daemon --build-cache --parallel
-
-# Финальный образ
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-# Создаем директории
-RUN mkdir -p logs config
-
-# Копируем JAR
-COPY --from=builder /app/build/libs/*.jar app.jar
-
-# Создаем пользователя
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring
-
+COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
