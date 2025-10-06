@@ -1,5 +1,6 @@
 package com.example.bankcards.config;
 
+import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -18,6 +19,9 @@ public class SwaggerConfig {
                         .description("API для управления банковскими картами")
                         .contact(new Contact()
                                 .name("Support")
-                                .email("support@bank.com")));
+                                .email("support@bank.com")))
+                 .externalDocs(new ExternalDocumentation()
+                .description("Bank Cards Documentation")
+                .url("docs/openapi.yaml"));
     }
 }
