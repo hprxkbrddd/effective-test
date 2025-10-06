@@ -20,7 +20,7 @@ public class AdminCardController {
     private final CardService cardService;
 
     @GetMapping
-    public ResponseEntity<List<Card>> getAllCards() {
+    public ResponseEntity<List<CardDTO>> getAllCards() {
         return ResponseEntity.ok(cardService.getAll());
     }
 
@@ -61,6 +61,12 @@ public class AdminCardController {
         return ResponseEntity.ok(
                 cardService.setCardStatus(cardId, CardStatus.BLOCKED)
         );
+    }
+
+    @PutMapping("/block-requested")
+    public ResponseEntity<String> blockRequestedCard() {
+        cardService.blockAllRequested();
+        return ResponseEntity.ok("All requested card are blocked");
     }
 
     @PutMapping("/expire")

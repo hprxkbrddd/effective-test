@@ -51,7 +51,8 @@ public class UserController {
     @PutMapping("/card/block")
     public ResponseEntity<String> blockCardRequest(
             @RequestHeader("Authorization") String authHeader,
-            @RequestParam String cardId) {
+            @RequestParam Long cardId) {
+        cardService.addToBlockQueue(cardId);
         return ResponseEntity.ok("Block request from user-id:" +
                 jwtService.extractId(authHeader.substring(7)) +
                 " has been sent to admin.\n Card to block: " + cardId);

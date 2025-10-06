@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
@@ -25,6 +26,12 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Query(value = "UPDATE card SET status = 2 WHERE expiry_date < CURRENT_DATE",
             nativeQuery = true)
     void expireCards();
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE card SET status = 1 WHERE id IN :cardIds",
+            nativeQuery = true)
+    void blockCards(Queue<Long> cardIds);
 
     @Modifying
     @Transactional

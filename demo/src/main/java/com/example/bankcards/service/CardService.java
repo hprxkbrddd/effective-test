@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +24,12 @@ public class CardService {
     private final UserRepository userRepository;
     private final CardNumberGenerator cardNumberGenerator;
 
-    public List<Card> getAll() {
-        return cardRepository.findAll();
+    private final Queue<Long> cardIdsToBlock = new PriorityQueue<>();
+
+    public List<CardDTO> getAll() {
+        return cardRepository.findAll()
+                .stream().map(Card::toDTOEncrypted)
+                .toList();
     }
 
     public CardDTO getById(Long cardId) {
@@ -44,7 +48,7 @@ public class CardService {
         if (userRepository.findById(userId).isEmpty())
             throw new EntityNotFoundException("Could not fetch cards of user. User is not in database");
         return cardRepository.findByOwnerId(userId)
-                .stream().map(Card::toDTO)
+                .stream().map(Card::toDTOEncrypted)
                 .toList();
     }
 
@@ -72,6 +76,20 @@ public class CardService {
                 .orElseThrow(() -> new EntityNotFoundException("Could not update card status. Card is not in database"));
         card.setStatus(status);
         return card.toDTOEncrypted();
+    }
+
+    public void addToBlockQueue(Long cardId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new EntityNotFoundException("Could not add card to block queue. Card does not exist"));
+        switch (card.getStatus()) {
+            case ACTIVE -> cardIdsToBlock.add(cardId);
+            case BLOCKED -> throw new InvalidCardException("Card is already blocked");
+            case EXPIRED -> throw new InvalidCardException("Card is expired and could not be blocked");
+        }
+    }
+
+    public void blockAllRequested() {
+        cardRepository.blockCards(cardIdsToBlock);
     }
 
     public void expire() {
