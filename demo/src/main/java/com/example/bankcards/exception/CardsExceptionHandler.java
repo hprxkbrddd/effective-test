@@ -13,7 +13,8 @@ public class CardsExceptionHandler {
     @ExceptionHandler({
             IllegalStateException.class,
             CardPropertyNotAccessibleException.class,
-            InvalidCardException.class
+            InvalidCardException.class,
+            BalanceException.class
     })
     public ResponseEntity<String> handleBadRequestExceptions(
             RuntimeException ex) {

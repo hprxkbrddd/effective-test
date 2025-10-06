@@ -37,4 +37,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Query(value = "UPDATE card SET balance = balance - :amount WHERE id = :cardId AND balance >= :amount",
             nativeQuery = true)
     int withdraw(@Param("cardId") Long cardId, @Param("amount") BigDecimal amount);
+
+    @Query(value = "SELECT transfer_funds(:fromId, :toId, :amount)", nativeQuery = true)
+    boolean transfer(Long fromId, Long toId, BigDecimal amount);
 }

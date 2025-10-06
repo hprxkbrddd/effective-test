@@ -4,6 +4,7 @@ import com.example.bankcards.dto.CardDTO;
 import com.example.bankcards.dto.CardType;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardStatus;
+import com.example.bankcards.exception.BalanceException;
 import com.example.bankcards.exception.CardPropertyNotAccessibleException;
 import com.example.bankcards.exception.InvalidCardException;
 import com.example.bankcards.repository.CardRepository;
@@ -85,20 +86,29 @@ public class CardService {
 
     public void deposit(Long cardId, BigDecimal amount) {
         if (invalid(cardId))
-            throw new InvalidCardException("Invalid card. Card is blocked or expired");
+            throw new InvalidCardException("Invalid card. Could not deposit funds. Card-id:" + cardId + " is blocked or expired.");
         int res = cardRepository.deposit(cardId, amount);
         if (res == 0)
             throw new CardPropertyNotAccessibleException("Could not deposit funds. Card does not exist");
     }
 
-    public int withdraw(Long cardId, BigDecimal amount) {
+    public void withdraw(Long cardId, BigDecimal amount) {
         if (invalid(cardId))
-            throw new InvalidCardException("Invalid card. Card is blocked or expired");
-        else
-            return cardRepository.withdraw(cardId, amount);
+            throw new InvalidCardException("Invalid card. Card-id:" + cardId + " is blocked or expired");
+        int res = cardRepository.withdraw(cardId, amount);
+        if (res == 0)
+            throw new BalanceException("Could not withdraw funds. Balance is less than withdraw amount or card does not exist");
     }
 
-    private boolean invalid(Long cardId){
+    public void transfer(Long fromId, Long toId, BigDecimal amount) {
+        if (invalid(fromId) || invalid(toId))
+            throw new InvalidCardException("Invalid card. Card-id:" + (invalid(fromId) ? fromId : toId) + " is blocked or expired");
+        boolean res = cardRepository.transfer(fromId, toId, amount);
+        if (!res)
+            throw new BalanceException("Could not transfer funds. Balance of Card-id:" + fromId + " is less than withdraw amount or one of cards does not exist");
+    }
+
+    private boolean invalid(Long cardId) {
         CardStatus status = cardRepository.findById(cardId)
                 .orElseThrow(() -> new EntityNotFoundException("Invalid card. Card does not exist"))
                 .getStatus();

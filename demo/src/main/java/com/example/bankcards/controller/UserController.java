@@ -84,10 +84,17 @@ public class UserController {
 
     @PutMapping("/card/withdraw")
     public ResponseEntity<String> withdraw(@RequestParam BigDecimal amount, @RequestParam Long cardId) {
-        int res = cardService.withdraw(cardId, amount);
-        if (res == 0)
-            throw new CardPropertyNotAccessibleException("Could not withdraw funds. Balance is less than withdraw amount");
-        else
-            return ResponseEntity.ok("Funds have been withdrawn: -" + amount.toString());
+        cardService.withdraw(cardId, amount);
+        return ResponseEntity.ok("Funds have been withdrawn: -" + amount.toString());
+    }
+
+    @PutMapping("/card/transfer")
+    public ResponseEntity<String> transfer(
+            @RequestParam Long fromId,
+            @RequestParam Long toId,
+            @RequestParam BigDecimal amount
+    ) {
+        cardService.transfer(fromId, toId, amount);
+        return ResponseEntity.ok("Funds have been transferred\nCard-id:" + fromId + " -" + amount + "\nCard-id:" + toId + " +" + amount);
     }
 }
