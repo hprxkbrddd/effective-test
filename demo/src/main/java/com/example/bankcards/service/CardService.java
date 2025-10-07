@@ -53,6 +53,27 @@ public class CardService {
                 .map(Card::toDTOEncrypted);
     }
 
+    public Page<CardDTO> getActiveCardsOfUser(String userId, Pageable pageable) {
+        if (userRepository.findById(userId).isEmpty())
+            throw new EntityNotFoundException("Could not fetch cards of user. User is not in database");
+        return cardRepository.findByOwnerIdAndStatus(userId, CardStatus.ACTIVE,pageable)
+                .map(Card::toDTOEncrypted);
+    }
+
+    public Page<CardDTO> getBlockedCardsOfUser(String userId, Pageable pageable) {
+        if (userRepository.findById(userId).isEmpty())
+            throw new EntityNotFoundException("Could not fetch cards of user. User is not in database");
+        return cardRepository.findByOwnerIdAndStatus(userId, CardStatus.BLOCKED,pageable)
+                .map(Card::toDTOEncrypted);
+    }
+
+    public Page<CardDTO> getExpiredCardsOfUser(String userId, Pageable pageable) {
+        if (userRepository.findById(userId).isEmpty())
+            throw new EntityNotFoundException("Could not fetch cards of user. User is not in database");
+        return cardRepository.findByOwnerIdAndStatus(userId, CardStatus.EXPIRED,pageable)
+                .map(Card::toDTOEncrypted);
+    }
+
     public CardDTO create(String ownerId) {
         Card card = new Card(
                 cardNumberGenerator.generateCardNumber(CardType.RANDOM),
@@ -127,7 +148,7 @@ public class CardService {
             throw new BalanceException("Could not transfer funds. Balance of Card-id:" + fromId + " is less than withdraw amount or one of cards does not exist");
     }
 
-    private boolean invalid(Long cardId) {
+    protected boolean invalid(Long cardId) {
         CardStatus status = cardRepository.findById(cardId)
                 .orElseThrow(() -> new EntityNotFoundException("Invalid card. Card does not exist"))
                 .getStatus();

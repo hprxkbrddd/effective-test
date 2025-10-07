@@ -3,7 +3,6 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.UserDTO;
 import com.example.bankcards.entity.CardUser;
 import com.example.bankcards.entity.Role;
-import com.example.bankcards.exception.UnauthorizedException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.util.IdGenerator;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,7 +48,7 @@ public class UserService {
         if (auth.isAuthenticated()) {
             return jwtService.generateToken(username);
         } else {
-            throw new UnauthorizedException("User is not authenticated");
+            throw new BadCredentialsException("User is not authenticated");
         }
     }
 

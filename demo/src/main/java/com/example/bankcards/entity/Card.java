@@ -13,6 +13,8 @@ import java.time.YearMonth;
 
 @Entity
 @NoArgsConstructor
+@Setter
+@Getter
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,25 +44,19 @@ public class Card {
 
     @Convert(converter = CardNumberEncryptor.class)
     @Column(name = "card_number", nullable = false, unique = true)
-    @Getter
     private String cardNumber;
 
     @Column(name = "card_holder", nullable = false)
-    @Getter
     private String ownerId;
 
     @Column(name = "expiry_date", nullable = false)
     @Convert(converter = CardExpiryDateConverter.class)
-    @Getter
     private YearMonth expiryDate;
 
     @Column(name = "status", nullable = false)
-    @Getter
-    @Setter
     private CardStatus status;
 
     @Column(name = "balance", nullable = false)
-    @Getter
     private BigDecimal balance;
 
     public String getCardNumberEncrypted() {

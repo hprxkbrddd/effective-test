@@ -48,6 +48,75 @@ public class UserController {
         }
     }
 
+    @GetMapping("/card/active")
+    public ResponseEntity<Page<CardDTO>> getActiveUsersCards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestHeader("Authorization") String authHeader) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.ok(cardService.getActiveCardsOfUser(
+                    jwtService.extractId(authHeader.substring(7)),
+                    pageable
+            ));
+        } else {
+            throw new UnauthorizedException("Auth header is either not present or unreadable");
+        }
+    }
+
+    @GetMapping("/card/blocked")
+    public ResponseEntity<Page<CardDTO>> getBlockedUsersCards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestHeader("Authorization") String authHeader) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.ok(cardService.getBlockedCardsOfUser(
+                    jwtService.extractId(authHeader.substring(7)),
+                    pageable
+            ));
+        } else {
+            throw new UnauthorizedException("Auth header is either not present or unreadable");
+        }
+    }
+
+    @GetMapping("/card/expired")
+    public ResponseEntity<Page<CardDTO>> getExpiredUsersCards(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestHeader("Authorization") String authHeader) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.ok(cardService.getExpiredCardsOfUser(
+                    jwtService.extractId(authHeader.substring(7)),
+                    pageable
+            ));
+        } else {
+            throw new UnauthorizedException("Auth header is either not present or unreadable");
+        }
+    }
+
     @PostMapping("/card")
     public ResponseEntity<CardDTO> createCard(
             @RequestHeader("Authorization") String authHeader) {

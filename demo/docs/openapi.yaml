@@ -847,6 +847,222 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /user/card/active:
+    get:
+      summary: Получить список активных карт пользователя
+      description: Возвращает пагинированный список активных банковских карт текущего пользователя
+      operationId: getActiveUsersCards
+      tags:
+        - User Card Management
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы (начинается с 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Размер страницы
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: sortBy
+          in: query
+          description: Поле для сортировки
+          required: false
+          schema:
+            type: string
+            default: "id"
+        - name: sortDirection
+          in: query
+          description: Направление сортировки
+          required: false
+          schema:
+            type: string
+            enum: [ asc, desc ]
+            default: "asc"
+        - name: Authorization
+          in: header
+          description: Bearer токен авторизации
+          required: true
+          schema:
+            type: string
+            example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardDTO'
+                  totalPages:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  size:
+                    type: integer
+                  number:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /user/card/blocked:
+    get:
+      summary: Получить список заблокированных карт пользователя
+      description: Возвращает пагинированный список заблокированных банковских карт текущего пользователя
+      operationId: getBlockedUsersCards
+      tags:
+        - User Card Management
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы (начинается с 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Размер страницы
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: sortBy
+          in: query
+          description: Поле для сортировки
+          required: false
+          schema:
+            type: string
+            default: "id"
+        - name: sortDirection
+          in: query
+          description: Направление сортировки
+          required: false
+          schema:
+            type: string
+            enum: [ asc, desc ]
+            default: "asc"
+        - name: Authorization
+          in: header
+          description: Bearer токен авторизации
+          required: true
+          schema:
+            type: string
+            example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardDTO'
+                  totalPages:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  size:
+                    type: integer
+                  number:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /user/card/expired:
+    get:
+      summary: Получить список просроченных карт пользователя
+      description: Возвращает пагинированный список просроченных банковских карт текущего пользователя
+      operationId: getExpiredUsersCards
+      tags:
+        - User Card Management
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы (начинается с 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: size
+          in: query
+          description: Размер страницы
+          required: false
+          schema:
+            type: integer
+            default: 10
+            minimum: 1
+            maximum: 100
+        - name: sortBy
+          in: query
+          description: Поле для сортировки
+          required: false
+          schema:
+            type: string
+            default: "id"
+        - name: sortDirection
+          in: query
+          description: Направление сортировки
+          required: false
+          schema:
+            type: string
+            enum: [ asc, desc ]
+            default: "asc"
+        - name: Authorization
+          in: header
+          description: Bearer токен авторизации
+          required: true
+          schema:
+            type: string
+            example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CardDTO'
+                  totalPages:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  size:
+                    type: integer
+                  number:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /user/card/block:
     put:
       summary: Запрос на блокировку карты

@@ -80,15 +80,16 @@ public class CardNumberGenerator {
      */
     private int calculateLuhnCheckDigit(String number) {
         int sum = 0;
-        boolean alternate = false;
+        boolean alternate = true; // Начинаем с true, чтобы удваивать каждую вторую цифру с конца
 
+        // Проходим по цифрам справа налево
         for (int i = number.length() - 1; i >= 0; i--) {
             int digit = Character.getNumericValue(number.charAt(i));
 
             if (alternate) {
                 digit *= 2;
                 if (digit > 9) {
-                    digit = (digit % 10) + 1;
+                    digit = digit - 9;
                 }
             }
 
@@ -102,6 +103,7 @@ public class CardNumberGenerator {
 
     /**
      * Проверяет валидность номера карты по алгоритму Луна
+     * Исправленная версия
      */
     public boolean isValidCardNumber(String cardNumber) {
         if (cardNumber == null || cardNumber.trim().isEmpty()) {
@@ -116,13 +118,14 @@ public class CardNumberGenerator {
         int sum = 0;
         boolean alternate = false;
 
+        // Проходим по цифрам справа налево
         for (int i = cleanNumber.length() - 1; i >= 0; i--) {
             int digit = Character.getNumericValue(cleanNumber.charAt(i));
 
             if (alternate) {
                 digit *= 2;
                 if (digit > 9) {
-                    digit = (digit % 10) + 1;
+                    digit = digit - 9;
                 }
             }
 
@@ -132,4 +135,5 @@ public class CardNumberGenerator {
 
         return (sum % 10) == 0;
     }
+
 }

@@ -39,6 +39,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // https://mvnrepository.com/artifact/org.mockito/mockito-inline
+    testImplementation("org.mockito:mockito-inline:4.11.0")
 }
 
 tasks.withType<Test> {

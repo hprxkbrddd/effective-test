@@ -4,6 +4,7 @@ import com.example.bankcards.dto.ErrorDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,7 +42,7 @@ public class CardsExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler({UnauthorizedException.class, BadCredentialsException.class})
     public ResponseEntity<ErrorDTO> handleUnauthorizedException(
             UnauthorizedException ex
     ) {
