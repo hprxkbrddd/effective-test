@@ -99,7 +99,7 @@ public class AdminCardController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteCard(@RequestParam String cardId) {
-        return null;
+    public ResponseEntity<CardDTO> deleteCard(@RequestParam Long cardId) {
+        return ResponseEntity.ok(cardService.delete(cardId));
     }
 }
