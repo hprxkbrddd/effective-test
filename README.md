@@ -7,5 +7,11 @@ docker compose up
 ```
 Входные данные для админа по умолчанию (изменяются в application.yml)
 
-Username: admin
-Password: admin
+- Username: admin
+- Password: admin
+
+В нем же хранятся
+
+- ключи шифрования карт
+- ключ шифрования JWT
+- время жизни токена
