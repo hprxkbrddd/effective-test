@@ -1,5 +1,6 @@
 package com.example.bankcards.exception;
 
+import com.example.bankcards.dto.ErrorDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,28 +17,40 @@ public class CardsExceptionHandler {
             InvalidCardException.class,
             BalanceException.class
     })
-    public ResponseEntity<String> handleBadRequestExceptions(
+    public ResponseEntity<ErrorDTO> handleBadRequestExceptions(
             RuntimeException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ex.getMessage());
+                .body(new ErrorDTO(
+                        HttpStatus.BAD_REQUEST.value(),
+                        ex.getClass().getName(),
+                        ex.getMessage()
+                ));
     }
 
     @ExceptionHandler({UsernameNotFoundException.class, EntityNotFoundException.class})
-    public ResponseEntity<String> handleUsernameNotFoundException(
+    public ResponseEntity<ErrorDTO> handleNotFoundException(
             RuntimeException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ex.getMessage());
+                .body(new ErrorDTO(
+                        HttpStatus.NOT_FOUND.value(),
+                        ex.getClass().getName(),
+                        ex.getMessage()
+                ));
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<String> handleUnauthorizedException(
+    public ResponseEntity<ErrorDTO> handleUnauthorizedException(
             UnauthorizedException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ex.getMessage());
+                .body(new ErrorDTO(
+                        HttpStatus.UNAUTHORIZED.value(),
+                        ex.getClass().getName(),
+                        ex.getMessage()
+                ));
     }
 }
