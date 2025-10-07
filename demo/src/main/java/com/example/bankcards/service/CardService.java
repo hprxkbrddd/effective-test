@@ -133,4 +133,12 @@ public class CardService {
                 .getStatus();
         return !status.equals(CardStatus.ACTIVE);
     }
+
+    public CardDTO delete(Long id){
+        CardDTO card = cardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Invalid card. Card does not exist"))
+                .toDTO();
+        cardRepository.deleteById(id);
+        return card;
+    }
 }
